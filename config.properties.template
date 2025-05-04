@@ -1,0 +1,6 @@
+# Supabase Configuration
+# Rename this file to config.properties and fill in your credentials
+# DO NOT commit the actual config.properties file to version control
+
+supabase.url=your_supabase_url_here
+supabase.key=your_supabase_key_here 
