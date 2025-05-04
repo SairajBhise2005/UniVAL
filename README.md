@@ -143,6 +143,20 @@ java -jar target/faculty-scheduling-system-1.0-SNAPSHOT.jar
 - Never commit `config.properties` or credentials to version control.
 - For production, always use environment variables for sensitive information.
 
----
+## Individual Contributions
+
+**Priyanka**
+- Creation of the format of the report, with initial reporting of the report.
+- Initial Design of the UI flow.
+
+**Sairaj**
+- Ideation of the topic
+- Designing/implementation of database in Supabase
+- Designing the UI flow
+- Developing the Java application
+- Test and run of the application
+- Reporting and Documentation of Project (Complete)
+- Version control
+- Creation & version control on GitHub Repository
 
 For more details, see the full project report (`OOPs_Final_Submission_Report.md`). 
