@@ -114,10 +114,9 @@ java -jar target/faculty-scheduling-system-1.0-SNAPSHOT.jar
 ```
 
 ## Usage
-- **Admin Login (Offline):**
+- **Admin Login:**
   - Email: `admin`
   - Password: `admin123$`
-  - No Supabase credentials required for admin demo mode
 - **Faculty/Student Login:**
   - Use Supabase credentials
 - **Scheduling:**
