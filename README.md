@@ -114,10 +114,9 @@ java -jar target/faculty-scheduling-system-1.0-SNAPSHOT.jar
 ```
 
 ## Usage
-- **Admin Login (Offline):**
+- **Admin Login:**
   - Email: `admin`
   - Password: `admin123$`
-  - No Supabase credentials required for admin demo mode
 - **Faculty/Student Login:**
   - Use Supabase credentials
 - **Scheduling:**
@@ -127,10 +126,6 @@ java -jar target/faculty-scheduling-system-1.0-SNAPSHOT.jar
   - Students can comment/react on evaluations
 - **Admin Dashboard:**
   - Manage users, courses, reports, and settings
-
-## Offline Admin Mode
-- If you log in as admin with the hardcoded credentials, the dashboard works with static/sample data and does not require Supabase.
-- All other users require Supabase credentials and a working backend.
 
 ## Troubleshooting
 - **JAVA_HOME not set:** Ensure JAVA_HOME points to your JDK 23 directory and is in your PATH.
