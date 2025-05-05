@@ -1,5 +1,37 @@
 package com.unival.facultyscheduling.view;
 
+/**
+ * AdminDashboardView provides the graphical user interface for the admin dashboard in the UniVAL system.
+ * <p>
+ * This class is responsible for rendering and managing all admin-facing dashboard features using JavaFX components.
+ * It includes navigation between sections (Dashboard, Users, Courses, Reports, Settings), displays and updates user and course data,
+ * and handles actions such as editing, deleting, and viewing reports. The dashboard is styled for a modern look and provides
+ * a responsive layout for a seamless admin experience.
+ * <p>
+ * Core Features:
+ * <ul>
+ *     <li>Sidebar navigation for switching between dashboard sections.</li>
+ *     <li>Header displaying the current user and navigation controls.</li>
+ *     <li>Dynamic content area for showing users, courses, reports, and settings.</li>
+ *     <li>Integration with AdminService and SupabaseClient for backend data operations.</li>
+ *     <li>Dialog management for editing users and courses.</li>
+ *     <li>Window state management for preserving UI state across sessions.</li>
+ * </ul>
+ * <p>
+ * Methods:
+ * <ul>
+ *     <li>initialize: Sets up the dashboard layout, containers, and default content.</li>
+ *     <li>createSidebar: Builds the left sidebar with navigation buttons.</li>
+ *     <li>createHeader: Builds the top header bar.</li>
+ *     <li>showDashboardContent, showUsersContent, showCoursesContent, showReportsContent, showSettingsContent: Switches displayed content.</li>
+ *     <li>addStatCard, addActivityItem, addCourseItem, addReportItem: Helpers for dashboard widgets.</li>
+ *     <li>showEditUserRoleDialog, showEditCourseDialog: Dialogs for editing user/course details.</li>
+ *     <li>updateNavigationStyles: Updates sidebar button styles based on active section.</li>
+ *     <li>show: Displays the dashboard window.</li>
+ * </ul>
+ * <p>
+ * Note: This class is tightly coupled with the JavaFX platform and expects proper initialization of the JavaFX runtime.
+ */
 import com.unival.facultyscheduling.util.WindowStateManager;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;

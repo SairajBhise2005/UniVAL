@@ -1,5 +1,61 @@
 package com.unival.facultyscheduling.service;
 
+/**
+ * SupabaseClient provides static utility methods for interacting with the Supabase backend in the UniVAL system.
+ * <p>
+ * This class encapsulates HTTP communication, authentication, and user management logic for the application.
+ * It includes secure password hashing with salt, user authentication, registration, and data fetching using the Java 11+ HttpClient API.
+ * <p>
+ * Core Features:
+ * <ul>
+ *     <li>Secure password hashing using SHA-256 and cryptographically secure random salts.</li>
+ *     <li>HTTP communication with Supabase endpoints using Java's HttpClient.</li>
+ *     <li>User authentication and registration with robust error handling and logging.</li>
+ *     <li>Logging of key operations for debugging and traceability.</li>
+ * </ul>
+ * <p>
+ * Methods:
+ * <ul>
+ *     <li>hashPassword: Hashes a password with a salt using SHA-256 and encodes it in Base64.</li>
+ *     <li>generateSalt: Generates a cryptographically secure random salt for password hashing.</li>
+ *     <li>fetchData: Fetches data from a specified Supabase endpoint.</li>
+ *     <li>registerUser: Registers a new user with the provided details.</li>
+ *     <li>authenticateUser: Authenticates a user with the provided email and password.</li>
+ *     <li>registerFaculty: Registers a faculty member with additional faculty-specific information.</li>
+ *     <li>registerStudent: Registers a student with additional student-specific information.</li>
+ *     <li>updateFacultyInfo: Updates faculty information for a specified faculty member.</li>
+ *     <li>updateStudentInfo: Updates student information for a specified student.</li>
+ *     <li>getAllDepartments: Retrieves all departments from the Supabase backend.</li>
+ *     <li>getDepartmentById: Retrieves a department by its ID from the Supabase backend.</li>
+ *     <li>getAllCourses: Retrieves all courses from the Supabase backend.</li>
+ *     <li>getCourseById: Retrieves a course by its ID from the Supabase backend.</li>
+ *     <li>getCoursesByDepartment: Retrieves courses by department from the Supabase backend.</li>
+ *     <li>getAllRooms: Retrieves all rooms from the Supabase backend.</li>
+ *     <li>getRoomById: Retrieves a room by its ID from the Supabase backend.</li>
+ *     <li>getAvailableRooms: Retrieves available rooms from the Supabase backend.</li>
+ *     <li>getAllTimeSlots: Retrieves all time slots from the Supabase backend.</li>
+ *     <li>getTimeSlotsByDay: Retrieves time slots by day of the week from the Supabase backend.</li>
+ *     <li>getAllCohorts: Retrieves all cohorts from the Supabase backend.</li>
+ *     <li>getCohortById: Retrieves a cohort by its ID from the Supabase backend.</li>
+ *     <li>getCohortsByDepartment: Retrieves cohorts by department from the Supabase backend.</li>
+ *     <li>getAllSchedules: Retrieves all schedules from the Supabase backend.</li>
+ *     <li>getScheduleById: Retrieves a schedule by its ID from the Supabase backend.</li>
+ *     <li>getSchedulesByFaculty: Retrieves schedules by faculty from the Supabase backend.</li>
+ *     <li>getSchedulesByCohort: Retrieves schedules by cohort from the Supabase backend.</li>
+ *     <li>createSchedule: Creates a new schedule with the provided details.</li>
+ *     <li>createEvaluation: Creates a new evaluation with the provided details.</li>
+ *     <li>getEvaluationsByFaculty: Retrieves evaluations by faculty from the Supabase backend.</li>
+ *     <li>getEvaluationsByCourse: Retrieves evaluations by course from the Supabase backend.</li>
+ *     <li>addComment: Adds a comment to an evaluation with the provided details.</li>
+ *     <li>getCommentsByEvaluation: Retrieves comments by evaluation from the Supabase backend.</li>
+ *     <li>addReaction: Adds a reaction to an evaluation with the provided details.</li>
+ *     <li>getReactionsByEvaluation: Retrieves reactions by evaluation from the Supabase backend.</li>
+ *     <li>getAllFaculty: Retrieves all faculty members from the Supabase backend.</li>
+ * </ul>
+ * <p>
+ * Note: This class is designed for static utility use and is not intended to be instantiated.
+ * It expects valid configuration in {@link AppConfig} for Supabase URL and API key.
+ */
 import com.unival.facultyscheduling.config.AppConfig;
 import java.net.URI;
 import java.net.URLEncoder;
@@ -24,6 +80,14 @@ public class SupabaseClient {
             .build();
     private static final SecureRandom secureRandom = new SecureRandom();
 
+    /**
+     * Hashes a password with the provided salt using SHA-256 and encodes the result in Base64.
+     *
+     * @param password The plain text password to hash.
+     * @param salt     The cryptographically secure random salt.
+     * @return The hashed password as a Base64-encoded string.
+     * @throws RuntimeException if the hashing algorithm is not available.
+     */
     private static String hashPassword(String password, String salt) {
         try {
             LOGGER.info("Hashing password with salt: " + salt);
@@ -40,12 +104,24 @@ public class SupabaseClient {
         }
     }
 
+    /**
+     * Generates a cryptographically secure random salt for password hashing.
+     *
+     * @return A Base64-encoded random salt string.
+     */
     private static String generateSalt() {
         byte[] salt = new byte[16];
         secureRandom.nextBytes(salt);
         return Base64.getEncoder().encodeToString(salt);
     }
 
+    /**
+     * Fetches data from a specified Supabase endpoint.
+     *
+     * @param endpoint The endpoint to fetch data from.
+     * @return The response body as a string.
+     * @throws IOException if the request fails.
+     */
     public static String fetchData(String endpoint) throws IOException {
         try {
             String supabaseUrl = AppConfig.getSupabaseUrl();
@@ -77,6 +153,18 @@ public class SupabaseClient {
         }
     }
 
+    /**
+     * Registers a new user with the provided details.
+     *
+     * @param name     The user's name.
+     * @param email    The user's email.
+     * @param password The user's password.
+     * @param role     The user's role.
+     * @param department The user's department.
+     * @param year     The user's year.
+     * @return The response body as a string.
+     * @throws IOException if the request fails.
+     */
     public static String registerUser(String name, String email, String password, String role, String department, int year) throws IOException {
         try {
             String supabaseUrl = AppConfig.getSupabaseUrl();
@@ -168,6 +256,14 @@ public class SupabaseClient {
         }
     }
 
+    /**
+     * Authenticates a user with the provided email and password.
+     *
+     * @param email    The user's email.
+     * @param password The user's password.
+     * @return The user's information as a comma-separated string, or null if authentication fails.
+     * @throws IOException if the request fails.
+     */
     public static String authenticateUser(String email, String password) throws IOException {
         try {
             String supabaseUrl = AppConfig.getSupabaseUrl();
@@ -258,17 +354,21 @@ public class SupabaseClient {
         }
     }
 
-    private static String extractUserId(String jsonResponse) {
-        Pattern pattern = Pattern.compile("\"user\":\\{\"id\":\"([^\"]+)\"");
-        Matcher matcher = pattern.matcher(jsonResponse);
-        if (matcher.find()) {
-            return matcher.group(1);
-        }
-        return null;
-    }
-
     /**
-     * Register a faculty member with additional faculty-specific information
+     * Registers a faculty member with additional faculty-specific information.
+     *
+     * @param name             The faculty member's name.
+     * @param email            The faculty member's email.
+     * @param password         The faculty member's password.
+     * @param departmentId     The faculty member's department ID.
+     * @param specialization   The faculty member's specialization.
+     * @param officeLocation   The faculty member's office location.
+     * @param officeHours      The faculty member's office hours.
+     * @param qualification    The faculty member's qualification.
+     * @param experienceYears  The faculty member's experience years.
+     * @param researchInterests The faculty member's research interests.
+     * @return The response body as a string.
+     * @throws IOException if the request fails.
      */
     public static String registerFaculty(String name, String email, String password, String departmentId, 
                                         String specialization, String officeLocation, String officeHours,
@@ -292,7 +392,21 @@ public class SupabaseClient {
     }
     
     /**
-     * Register a student with additional student-specific information
+     * Registers a student with additional student-specific information.
+     *
+     * @param name             The student's name.
+     * @param email            The student's email.
+     * @param password         The student's password.
+     * @param departmentId     The student's department ID.
+     * @param year             The student's year.
+     * @param enrollmentNumber The student's enrollment number.
+     * @param major            The student's major.
+     * @param minor            The student's minor.
+     * @param gpa              The student's GPA.
+     * @param expectedGraduationDate The student's expected graduation date.
+     * @param advisorId        The student's advisor ID.
+     * @return The response body as a string.
+     * @throws IOException if the request fails.
      */
     public static String registerStudent(String name, String email, String password, String departmentId, 
                                         int year, String enrollmentNumber, String major, String minor,
@@ -316,7 +430,17 @@ public class SupabaseClient {
     }
     
     /**
-     * Update faculty information
+     * Updates faculty information for a specified faculty member.
+     *
+     * @param facultyId        The faculty member's ID.
+     * @param specialization   The faculty member's specialization.
+     * @param officeLocation   The faculty member's office location.
+     * @param officeHours      The faculty member's office hours.
+     * @param qualification    The faculty member's qualification.
+     * @param experienceYears  The faculty member's experience years.
+     * @param researchInterests The faculty member's research interests.
+     * @return The response body as a string.
+     * @throws IOException if the request fails.
      */
     private static String updateFacultyInfo(String facultyId, String specialization, String officeLocation, 
                                           String officeHours, String qualification, Integer experienceYears, 
@@ -356,7 +480,17 @@ public class SupabaseClient {
     }
     
     /**
-     * Update student information
+     * Updates student information for a specified student.
+     *
+     * @param studentId        The student's ID.
+     * @param enrollmentNumber The student's enrollment number.
+     * @param major            The student's major.
+     * @param minor            The student's minor.
+     * @param gpa              The student's GPA.
+     * @param expectedGraduationDate The student's expected graduation date.
+     * @param advisorId        The student's advisor ID.
+     * @return The response body as a string.
+     * @throws IOException if the request fails.
      */
     private static String updateStudentInfo(String studentId, String enrollmentNumber, String major, String minor,
                                           Double gpa, String expectedGraduationDate, String advisorId) throws IOException {
@@ -394,97 +528,216 @@ public class SupabaseClient {
         }
     }
 
-    // Department methods
+    /**
+     * Retrieves all departments from the Supabase backend.
+     *
+     * @return The response body as a string.
+     * @throws IOException if the request fails.
+     */
     public static String getAllDepartments() throws IOException {
         String endpoint = "/rest/v1/departments";
         return fetchData(endpoint);
     }
 
+    /**
+     * Retrieves a department by its ID from the Supabase backend.
+     *
+     * @param departmentId The department's ID.
+     * @return The response body as a string.
+     * @throws IOException if the request fails.
+     */
     public static String getDepartmentById(String departmentId) throws IOException {
         String endpoint = "/rest/v1/departments?department_id=eq." + departmentId;
         return fetchData(endpoint);
     }
 
-    // Course methods
+    /**
+     * Retrieves all courses from the Supabase backend.
+     *
+     * @return The response body as a string.
+     * @throws IOException if the request fails.
+     */
     public static String getAllCourses() throws IOException {
         String endpoint = "/rest/v1/courses";
         return fetchData(endpoint);
     }
 
+    /**
+     * Retrieves a course by its ID from the Supabase backend.
+     *
+     * @param courseId The course's ID.
+     * @return The response body as a string.
+     * @throws IOException if the request fails.
+     */
     public static String getCourseById(String courseId) throws IOException {
         String endpoint = "/rest/v1/courses?course_id=eq." + courseId;
         return fetchData(endpoint);
     }
 
+    /**
+     * Retrieves courses by department from the Supabase backend.
+     *
+     * @param departmentId The department's ID.
+     * @return The response body as a string.
+     * @throws IOException if the request fails.
+     */
     public static String getCoursesByDepartment(String departmentId) throws IOException {
         String endpoint = "/rest/v1/courses?department_id=eq." + departmentId;
         return fetchData(endpoint);
     }
 
-    // Room methods
+    /**
+     * Retrieves all rooms from the Supabase backend.
+     *
+     * @return The response body as a string.
+     * @throws IOException if the request fails.
+     */
     public static String getAllRooms() throws IOException {
         String endpoint = "/rest/v1/rooms";
         return fetchData(endpoint);
     }
 
+    /**
+     * Retrieves a room by its ID from the Supabase backend.
+     *
+     * @param roomId The room's ID.
+     * @return The response body as a string.
+     * @throws IOException if the request fails.
+     */
     public static String getRoomById(String roomId) throws IOException {
         String endpoint = "/rest/v1/rooms?room_id=eq." + roomId;
         return fetchData(endpoint);
     }
 
+    /**
+     * Retrieves available rooms from the Supabase backend.
+     *
+     * @return The response body as a string.
+     * @throws IOException if the request fails.
+     */
     public static String getAvailableRooms() throws IOException {
         String endpoint = "/rest/v1/rooms?is_available=eq.true";
         return fetchData(endpoint);
     }
 
-    // Time slot methods
+    /**
+     * Retrieves all time slots from the Supabase backend.
+     *
+     * @return The response body as a string.
+     * @throws IOException if the request fails.
+     */
     public static String getAllTimeSlots() throws IOException {
         String endpoint = "/rest/v1/time_slots";
         return fetchData(endpoint);
     }
 
+    /**
+     * Retrieves time slots by day of the week from the Supabase backend.
+     *
+     * @param dayOfWeek The day of the week.
+     * @return The response body as a string.
+     * @throws IOException if the request fails.
+     */
     public static String getTimeSlotsByDay(String dayOfWeek) throws IOException {
         String endpoint = "/rest/v1/time_slots?day_of_week=eq." + dayOfWeek;
         return fetchData(endpoint);
     }
 
-    // Cohort methods
+    /**
+     * Retrieves all cohorts from the Supabase backend.
+     *
+     * @return The response body as a string.
+     * @throws IOException if the request fails.
+     */
     public static String getAllCohorts() throws IOException {
         String endpoint = "/rest/v1/cohorts";
         return fetchData(endpoint);
     }
 
+    /**
+     * Retrieves a cohort by its ID from the Supabase backend.
+     *
+     * @param cohortId The cohort's ID.
+     * @return The response body as a string.
+     * @throws IOException if the request fails.
+     */
     public static String getCohortById(String cohortId) throws IOException {
         String endpoint = "/rest/v1/cohorts?cohort_id=eq." + cohortId;
         return fetchData(endpoint);
     }
 
+    /**
+     * Retrieves cohorts by department from the Supabase backend.
+     *
+     * @param departmentId The department's ID.
+     * @return The response body as a string.
+     * @throws IOException if the request fails.
+     */
     public static String getCohortsByDepartment(String departmentId) throws IOException {
         String endpoint = "/rest/v1/cohorts?department_id=eq." + departmentId;
         return fetchData(endpoint);
     }
 
-    // Schedule methods
+    /**
+     * Retrieves all schedules from the Supabase backend.
+     *
+     * @return The response body as a string.
+     * @throws IOException if the request fails.
+     */
     public static String getAllSchedules() throws IOException {
         String endpoint = "/rest/v1/schedules";
         return fetchData(endpoint);
     }
 
+    /**
+     * Retrieves a schedule by its ID from the Supabase backend.
+     *
+     * @param scheduleId The schedule's ID.
+     * @return The response body as a string.
+     * @throws IOException if the request fails.
+     */
     public static String getScheduleById(String scheduleId) throws IOException {
         String endpoint = "/rest/v1/schedules?schedule_id=eq." + scheduleId;
         return fetchData(endpoint);
     }
 
+    /**
+     * Retrieves schedules by faculty from the Supabase backend.
+     *
+     * @param facultyId The faculty's ID.
+     * @return The response body as a string.
+     * @throws IOException if the request fails.
+     */
     public static String getSchedulesByFaculty(String facultyId) throws IOException {
         String endpoint = "/rest/v1/schedules?faculty_id=eq." + facultyId;
         return fetchData(endpoint);
     }
 
+    /**
+     * Retrieves schedules by cohort from the Supabase backend.
+     *
+     * @param cohortId The cohort's ID.
+     * @return The response body as a string.
+     * @throws IOException if the request fails.
+     */
     public static String getSchedulesByCohort(String cohortId) throws IOException {
         String endpoint = "/rest/v1/schedules?cohort_id=eq." + cohortId;
         return fetchData(endpoint);
     }
 
+    /**
+     * Creates a new schedule with the provided details.
+     *
+     * @param courseId     The course's ID.
+     * @param facultyId    The faculty's ID.
+     * @param cohortId     The cohort's ID.
+     * @param roomId       The room's ID.
+     * @param slotId       The time slot's ID.
+     * @param semester     The semester.
+     * @param academicYear The academic year.
+     * @return The response body as a string.
+     * @throws IOException if the request fails.
+     */
     public static String createSchedule(String courseId, String facultyId, String cohortId, 
                                       String roomId, String slotId, String semester, 
                                       String academicYear) throws IOException {
@@ -524,7 +777,23 @@ public class SupabaseClient {
         }
     }
 
-    // Evaluation methods
+    /**
+     * Creates a new evaluation with the provided details.
+     *
+     * @param title          The evaluation's title.
+     * @param description    The evaluation's description.
+     * @param subject        The evaluation's subject.
+     * @param type           The evaluation's type.
+     * @param date           The evaluation's date.
+     * @param startTime      The evaluation's start time.
+     * @param endTime        The evaluation's end time.
+     * @param courseId       The course's ID.
+     * @param facultyId      The faculty's ID.
+     * @param roomId         The room's ID.
+     * @param createdBy      The creator's ID.
+     * @return The response body as a string.
+     * @throws IOException if the request fails.
+     */
     public static String createEvaluation(String title, String description, String subject, String type,
                                         String date, String startTime, String endTime, String courseId,
                                         String facultyId, String roomId, String createdBy) throws IOException {
@@ -568,17 +837,40 @@ public class SupabaseClient {
         }
     }
 
+    /**
+     * Retrieves evaluations by faculty from the Supabase backend.
+     *
+     * @param facultyId The faculty's ID.
+     * @return The response body as a string.
+     * @throws IOException if the request fails.
+     */
     public static String getEvaluationsByFaculty(String facultyId) throws IOException {
         String endpoint = "/rest/v1/evaluations?faculty_id=eq." + facultyId;
         return fetchData(endpoint);
     }
 
+    /**
+     * Retrieves evaluations by course from the Supabase backend.
+     *
+     * @param courseId The course's ID.
+     * @return The response body as a string.
+     * @throws IOException if the request fails.
+     */
     public static String getEvaluationsByCourse(String courseId) throws IOException {
         String endpoint = "/rest/v1/evaluations?course_id=eq." + courseId;
         return fetchData(endpoint);
     }
 
-    // Comment methods
+    /**
+     * Adds a comment to an evaluation with the provided details.
+     *
+     * @param evaluationId The evaluation's ID.
+     * @param userId       The user's ID.
+     * @param text         The comment's text.
+     * @param parentCommentId The parent comment's ID.
+     * @return The response body as a string.
+     * @throws IOException if the request fails.
+     */
     public static String addComment(String evaluationId, String userId, String text, String parentCommentId) throws IOException {
         try {
             String supabaseUrl = AppConfig.getSupabaseUrl();
@@ -616,12 +908,27 @@ public class SupabaseClient {
         }
     }
 
+    /**
+     * Retrieves comments by evaluation from the Supabase backend.
+     *
+     * @param evaluationId The evaluation's ID.
+     * @return The response body as a string.
+     * @throws IOException if the request fails.
+     */
     public static String getCommentsByEvaluation(String evaluationId) throws IOException {
         String endpoint = "/rest/v1/comments?evaluation_id=eq." + evaluationId;
         return fetchData(endpoint);
     }
 
-    // Reaction methods
+    /**
+     * Adds a reaction to an evaluation with the provided details.
+     *
+     * @param evaluationId The evaluation's ID.
+     * @param userId       The user's ID.
+     * @param reactionType The reaction's type.
+     * @return The response body as a string.
+     * @throws IOException if the request fails.
+     */
     public static String addReaction(String evaluationId, String userId, String reactionType) throws IOException {
         try {
             String supabaseUrl = AppConfig.getSupabaseUrl();
@@ -654,16 +961,41 @@ public class SupabaseClient {
         }
     }
 
+    /**
+     * Retrieves reactions by evaluation from the Supabase backend.
+     *
+     * @param evaluationId The evaluation's ID.
+     * @return The response body as a string.
+     * @throws IOException if the request fails.
+     */
     public static String getReactionsByEvaluation(String evaluationId) throws IOException {
         String endpoint = "/rest/v1/reactions?evaluation_id=eq." + evaluationId;
         return fetchData(endpoint);
     }
 
     /**
-     * Get all faculty members
+     * Retrieves all faculty members from the Supabase backend.
+     *
+     * @return The response body as a string.
+     * @throws IOException if the request fails.
      */
     public static String getAllFaculty() throws IOException {
         String endpoint = "/rest/v1/faculty";
         return fetchData(endpoint);
+    }
+
+    /**
+     * Extracts the user ID from a JSON response.
+     *
+     * @param jsonResponse The JSON response.
+     * @return The user ID, or null if not found.
+     */
+    private static String extractUserId(String jsonResponse) {
+        Pattern pattern = Pattern.compile("\"user\":\\{\"id\":\"([^\"]+)\"");
+        Matcher matcher = pattern.matcher(jsonResponse);
+        if (matcher.find()) {
+            return matcher.group(1);
+        }
+        return null;
     }
 }

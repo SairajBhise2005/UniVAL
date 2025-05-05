@@ -1,5 +1,28 @@
 package com.unival.facultyscheduling.view;
 
+/**
+ * CourseSelectionView provides the user interface for selecting and viewing courses in the UniVAL system.
+ * <p>
+ * This class is responsible for rendering a course selection screen using JavaFX components. It presents a list of available courses
+ * to the user, allowing them to select a course and view its associated schedule or details. The view is styled with a modern look
+ * and is intended to be used by both students and faculty, adapting its content and behavior based on the user's role and department.
+ * <p>
+ * Core Features:
+ * <ul>
+ *     <li>Header section with title and subtitle for user guidance.</li>
+ *     <li>Dynamic main content area for displaying available courses.</li>
+ *     <li>Integration with backend or data models to fetch and display course information (implementation-dependent).</li>
+ *     <li>Responsive layout and styling for improved user experience.</li>
+ * </ul>
+ * <p>
+ * Methods:
+ * <ul>
+ *     <li>initialize: Sets up the layout, header, and main content area for course selection.</li>
+ *     <li>Other methods (not shown in this snippet) would handle course selection events and data updates.</li>
+ * </ul>
+ * <p>
+ * Note: This class is tightly coupled with the JavaFX platform and expects proper initialization of the JavaFX runtime.
+ */
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -16,6 +39,14 @@ public class CourseSelectionView {
     private String userRole;
     private String userDepartment;
 
+    /**
+     * Constructs a new CourseSelectionView for the given user.
+     *
+     * @param stage           The primary stage for the course selection view.
+     * @param userName        The name of the user.
+     * @param userRole        The role of the user (e.g., "STUDENT" or "FACULTY").
+     * @param userDepartment  The department of the user.
+     */
     public CourseSelectionView(Stage stage, String userName, String userRole, String userDepartment) {
         this.stage = stage;
         this.userName = userName;
@@ -24,6 +55,10 @@ public class CourseSelectionView {
         initialize();
     }
 
+    /**
+     * Initializes the UI components and layout for the course selection view.
+     * Sets up the header and main content area for displaying courses.
+     */
     private void initialize() {
         BorderPane root = new BorderPane();
         root.setPadding(new Insets(20));

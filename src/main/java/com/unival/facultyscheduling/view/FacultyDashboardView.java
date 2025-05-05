@@ -1,5 +1,30 @@
 package com.unival.facultyscheduling.view;
 
+/**
+ * FacultyDashboardView provides the graphical user interface for the faculty dashboard in the UniVAL system.
+ * <p>
+ * This class is responsible for rendering and managing all faculty-facing dashboard features using JavaFX components.
+ * It includes navigation between sections relevant to faculty members, displays personalized faculty information,
+ * and provides access to features such as schedules, course lists, and notifications. The dashboard is designed
+ * with a modern look and responsive layout for an optimal faculty experience.
+ * <p>
+ * Core Features:
+ * <ul>
+ *     <li>Sidebar navigation for switching between faculty dashboard sections.</li>
+ *     <li>Header displaying the current faculty member and navigation controls.</li>
+ *     <li>Dynamic content area for showing schedules, courses, and notifications.</li>
+ *     <li>Integration with backend services for retrieving and updating faculty data.</li>
+ *     <li>Window state management for preserving UI state across sessions.</li>
+ * </ul>
+ * <p>
+ * Methods:
+ * <ul>
+ *     <li>initialize: Sets up the dashboard layout, containers, and default content for faculty.</li>
+ *     <li>Other methods (not shown in this snippet) handle navigation, data display, and event handling.</li>
+ * </ul>
+ * <p>
+ * Note: This class is tightly coupled with the JavaFX platform and expects proper initialization of the JavaFX runtime.
+ */
 import com.unival.facultyscheduling.util.WindowStateManager;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -20,6 +45,14 @@ public class FacultyDashboardView {
     private VBox content;
     private String selectedSection;
 
+    /**
+     * Constructs a new FacultyDashboardView for the given faculty member.
+     *
+     * @param stage           The primary stage for the dashboard.
+     * @param userName        The name of the faculty member.
+     * @param userRole        The role of the user (should be "FACULTY").
+     * @param userDepartment  The department of the faculty member.
+     */
     public FacultyDashboardView(Stage stage, String userName, String userRole, String userDepartment) {
         this.stage = stage;
         this.userName = userName;
@@ -29,6 +62,10 @@ public class FacultyDashboardView {
         initialize();
     }
 
+    /**
+     * Initializes the UI components and layout of the faculty dashboard.
+     * Sets up the sidebar navigation, content area, and default view.
+     */
     private void initialize() {
         // Main container with gradient background
         BorderPane mainContainer = new BorderPane();

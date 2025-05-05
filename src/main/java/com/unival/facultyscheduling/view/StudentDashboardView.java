@@ -1,5 +1,37 @@
 package com.unival.facultyscheduling.view;
 
+/**
+ * StudentDashboardView provides the graphical user interface for the student dashboard in the UniVAL system.
+ * <p>
+ * This class is responsible for rendering and managing all student-facing dashboard features using JavaFX components.
+ * It includes navigation between sections relevant to students, displays personalized student information, and provides
+ * access to features such as schedules, course lists, and notifications. The dashboard is designed with a modern look and
+ * responsive layout for an optimal student experience.
+ * <p>
+ * Core Features:
+ * <ul>
+ *     <li>Sidebar navigation for switching between student dashboard sections.</li>
+ *     <li>Header displaying the current student and navigation controls.</li>
+ *     <li>Dynamic content area for showing schedules, courses, and notifications.</li>
+ *     <li>Integration with backend services for retrieving and updating student data.</li>
+ *     <li>Window state management for preserving UI state across sessions.</li>
+ * </ul>
+ * <p>
+ * Methods:
+ * <ul>
+ *     <li>initializeUI: Sets up the dashboard layout, containers, and default content for students.</li>
+ *     <li>updateNavigationStyles: Updates sidebar button styles based on the active section.</li>
+ *     <li>handleNavigation: Handles navigation to different dashboard sections.</li>
+ *     <li>showDashboardContent: Displays the dashboard overview for students.</li>
+ *     <li>showScheduleContent: Displays the student's schedule/calendar.</li>
+ *     <li>showCoursesContent: Displays the course registration/content view.</li>
+ *     <li>showProfileContent: Displays the student's profile information.</li>
+ *     <li>createInfoText: Helper method to create styled text elements.</li>
+ *     <li>show: Displays the dashboard window.</li>
+ * </ul>
+ * <p>
+ * Note: This class is tightly coupled with the JavaFX platform and expects proper initialization of the JavaFX runtime.
+ */
 import com.unival.facultyscheduling.util.WindowStateManager;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
@@ -28,6 +60,14 @@ public class StudentDashboardView {
     private BorderPane root;
     private String selectedSection;
 
+    /**
+     * Constructs a new StudentDashboardView for the given student.
+     *
+     * @param stage        The primary stage for the dashboard.
+     * @param studentName  The name of the student.
+     * @param userRole     The role of the user (should be "STUDENT").
+     * @param department   The department of the student.
+     */
     public StudentDashboardView(Stage stage, String studentName, String userRole, String department) {
         this.stage = stage;
         this.studentName = studentName;
@@ -37,6 +77,10 @@ public class StudentDashboardView {
         initializeUI();
     }
 
+    /**
+     * Initializes the UI components and layout of the student dashboard.
+     * Sets up the sidebar navigation, content area, and default view.
+     */
     private void initializeUI() {
         root = new BorderPane();
         root.setStyle("-fx-background-color: linear-gradient(to bottom right, #85FFC7, #297373);");
@@ -113,6 +157,11 @@ public class StudentDashboardView {
         stage.setScene(scene);
     }
 
+    /**
+     * Updates the styles of the navigation buttons to reflect the currently selected section.
+     *
+     * @param buttons The list of navigation button nodes.
+     */
     private void updateNavigationStyles(List<Node> buttons) {
         for (Node button : buttons) {
             if (button instanceof Button) {
@@ -126,6 +175,11 @@ public class StudentDashboardView {
         }
     }
 
+    /**
+     * Handles navigation to the specified dashboard section.
+     *
+     * @param section The section to navigate to (e.g., "Dashboard", "Schedule", "Courses", "Profile").
+     */
     private void handleNavigation(String section) {
         switch (section) {
             case "Dashboard":
@@ -143,6 +197,9 @@ public class StudentDashboardView {
         }
     }
 
+    /**
+     * Displays the dashboard overview content for the student, including enrolled courses.
+     */
     private void showDashboardContent() {
         content.getChildren().clear();
         Text contentTitle = new Text("Dashboard Overview");
@@ -166,12 +223,18 @@ public class StudentDashboardView {
         content.getChildren().addAll(contentTitle, summary);
     }
 
+    /**
+     * Displays the student's schedule/calendar view.
+     */
     private void showScheduleContent() {
         content.getChildren().clear();
         FacultyCalendarView calendarView = new FacultyCalendarView(stage, userName, "STUDENT", userDepartment);
         content.getChildren().add(calendarView.getRoot());
     }
 
+    /**
+     * Displays the course registration or course content view for the student.
+     */
     private void showCoursesContent() {
         content.getChildren().clear();
         Text contentTitle = new Text("Course Registration");
@@ -183,6 +246,9 @@ public class StudentDashboardView {
         courseView.show();
     }
 
+    /**
+     * Displays the student's profile information.
+     */
     private void showProfileContent() {
         content.getChildren().clear();
         Text contentTitle = new Text("Student Profile");
@@ -201,12 +267,21 @@ public class StudentDashboardView {
         content.getChildren().addAll(contentTitle, profileInfo);
     }
 
+    /**
+     * Helper method to create styled text nodes for displaying information.
+     *
+     * @param text The text content to display.
+     * @return A styled Text node.
+     */
     private Text createInfoText(String text) {
         Text infoText = new Text(text);
         infoText.setStyle("-fx-font-size: 14px; -fx-fill: #666666;");
         return infoText;
     }
 
+    /**
+     * Displays the student dashboard window and applies window state settings.
+     */
     public void show() {
         WindowStateManager.applyWindowState(stage);
         stage.show();

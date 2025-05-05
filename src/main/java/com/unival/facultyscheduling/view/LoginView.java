@@ -1,5 +1,33 @@
 package com.unival.facultyscheduling.view;
 
+/**
+ * LoginView provides the graphical user interface for user authentication in the UniVAL system.
+ * <p>
+ * This class is responsible for rendering the login screen using JavaFX components. It includes a styled login card,
+ * input fields for email and password, a 'Remember me' option, and navigation to registration or password recovery.
+ * The view handles user authentication, including offline admin login and integration with Supabase for user data.
+ * It redirects authenticated users to their respective dashboards based on their role (admin, faculty, student).
+ * <p>
+ * Core Features:
+ * <ul>
+ *     <li>Modern, responsive login card UI with branding and helpful prompts.</li>
+ *     <li>Email and password input fields with validation and prompt text.</li>
+ *     <li>'Remember me' functionality and password recovery link.</li>
+ *     <li>Integration with SupabaseClient for user authentication.</li>
+ *     <li>Offline admin authentication for fallback scenarios.</li>
+ *     <li>Role-based redirection to Admin, Faculty, or Student dashboards.</li>
+ * </ul>
+ * <p>
+ * Methods:
+ * <ul>
+ *     <li>initialize: Sets up the login UI, form fields, and event handlers.</li>
+ *     <li>createInputField: Helper to create styled input fields for email and password.</li>
+ *     <li>handleLogin: Handles authentication logic and dashboard redirection.</li>
+ *     <li>show: Displays the login window.</li>
+ * </ul>
+ * <p>
+ * Note: This class is tightly coupled with the JavaFX platform and expects proper initialization of the JavaFX runtime.
+ */
 import com.unival.facultyscheduling.service.SupabaseClient;
 import com.unival.facultyscheduling.util.WindowStateManager;
 import javafx.geometry.Insets;
@@ -19,11 +47,20 @@ public class LoginView {
     private Scene scene;
     private Text actiontarget;
 
+    /**
+     * Constructs a new LoginView for the given application stage.
+     *
+     * @param stage The primary JavaFX stage for the login window.
+     */
     public LoginView(Stage stage) {
         this.stage = stage;
         initialize();
     }
 
+    /**
+     * Initializes the UI components and layout for the login view.
+     * Sets up the login card, form fields, event handlers, and scene.
+     */
     private void initialize() {
         // Initialize window state management
         WindowStateManager.initializeWindowState(stage);
@@ -131,6 +168,13 @@ public class LoginView {
         scene = new Scene(mainContainer, 800, 600);
     }
 
+    /**
+     * Creates a styled input field for the login form.
+     *
+     * @param label The label for the input field.
+     * @param type  The type of input ("email-address" or "password").
+     * @return A VBox containing the label and input field.
+     */
     private VBox createInputField(String label, String type) {
         VBox container = new VBox(5);
         Label fieldLabel = new Label(label);
@@ -151,6 +195,14 @@ public class LoginView {
         return container;
     }
 
+    /**
+     * Handles user authentication and dashboard redirection.
+     * Validates input, performs offline admin login, or authenticates via SupabaseClient.
+     * Redirects users to their respective dashboards based on role.
+     *
+     * @param email    The user's email address.
+     * @param password The user's password.
+     */
     private void handleLogin(String email, String password) {
         if (email.isEmpty() || password.isEmpty()) {
             actiontarget.setText("Please fill in all fields");
@@ -214,6 +266,9 @@ public class LoginView {
         }
     }
 
+    /**
+     * Displays the login window and applies window state settings.
+     */
     public void show() {
         stage.setTitle("UniVAL - Login");
         stage.setScene(scene);
