@@ -154,4 +154,4 @@ java -jar target/faculty-scheduling-system-1.0-SNAPSHOT.jar
 - Version control
 - Creation & version control on GitHub Repository
 
-For more details, see the full project report (`OOPs_Final_Submission_Report.md`). 
+For more details, see the full project report (`OOPs Final Report(1)`). 
